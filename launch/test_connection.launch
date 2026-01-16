@@ -1,0 +1,17 @@
+<launch>
+  <arg name="pi_role" default="pi1" />
+  
+  <!-- Pi1: Master - publishes test topic -->
+  <group if="$(eval pi_role == 'pi1')">
+    <node pkg="rostopic" type="rostopic" name="test_publisher"
+          args="pub /test_topic std_msgs/String 'data: Hello from Pi1 Master' -r 1"
+          output="screen" />
+  </group>
+  
+  <!-- Pi2: Slave - echoes test topic -->
+  <group if="$(eval pi_role == 'pi2')">
+    <node pkg="rostopic" type="rostopic" name="test_subscriber"
+          args="echo /test_topic"
+          output="screen" />
+  </group>
+</launch>
