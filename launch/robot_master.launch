@@ -1,0 +1,46 @@
+<launch>
+  <arg name="pi_role" default="pi1" />
+  <arg name="ros_master_host" default="pi1.local" />
+
+  <param if="$(eval pi_role == 'pi1')" name="/run_id" value="$(env ROS_RUN_ID)" />
+
+  <group if="$(eval pi_role == 'pi1')">
+    <node pkg="roslaunch" type="roscore" name="roscore" output="screen" />
+
+    <group ns="team_movement">
+      <node pkg="team_movement_pkg" type="team_movement_node" name="team_movement" output="screen" />
+    </group>
+
+    <group ns="team_navigation">
+      <node pkg="team_navigation_pkg" type="team_navigation_node" name="team_navigation" output="screen" />
+    </group>
+
+    <group ns="team_signals">
+      <node pkg="team_signals_pkg" type="team_signals_node" name="team_signals" output="screen" />
+    </group>
+
+    <group ns="points_of_interest">
+      <node pkg="points_of_interest_pkg" type="points_of_interest_node" name="points_of_interest" output="screen" />
+    </group>
+  </group>
+
+  <group if="$(eval pi_role == 'pi2')">
+    <group ns="speech_in">
+      <node pkg="speech_in_pkg" type="speech_in_node" name="speech_in" output="screen" />
+    </group>
+
+    <group ns="speech_out">
+      <node pkg="speech_out_pkg" type="speech_out_node" name="speech_out" output="screen" />
+    </group>
+  </group>
+
+  <group if="$(eval pi_role == 'pi3')">
+    <group ns="team_monitoring">
+      <node pkg="team_monitoring_pkg" type="team_monitoring_node" name="team_monitoring" output="screen" />
+    </group>
+
+    <group ns="team_display">
+      <node pkg="team_display_pkg" type="team_display_node" name="team_display" output="screen" />
+    </group>
+  </group>
+</launch>

@@ -1,0 +1,16 @@
+[Unit]
+Description=Robot bringup (%i)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+Environment=ROS_DISTRO=noetic
+Environment=ROS_WS=/home/pi/ros_ws
+ExecStart=/home/pi/robot_bringup/scripts/start_robot.sh %i pi1.local
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
